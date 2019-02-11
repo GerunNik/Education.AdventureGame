@@ -10,19 +10,24 @@ namespace Adventure.Weapons
 {
     class Sword : Weapon
     {
-        public List<Attack> AttackUp()
+        public Sword()
+        {
+            Damage = 3;
+            Name = "Sword";
+        }
+        public override List<Attack> AttackUp()
         {
             return GeneralAttack();
         }
-        public List<Attack> AttackDown()
+        public override List<Attack> AttackDown()
         {
             return GeneralAttack();
         }
-        public List<Attack> AttackLeft()
+        public override List<Attack> AttackLeft()
         {
             return GeneralAttack();
         }
-        public List<Attack> AttackRight()
+        public override List<Attack> AttackRight()
         {
             return GeneralAttack();
         }
@@ -30,49 +35,12 @@ namespace Adventure.Weapons
         {
             List<Attack> AttackPositions = new List<Attack>();
 
-            Attack DownAttack = new Attack
-            {
-                AttackPoint = HurtDown()
-            };
-            Attack UpAttack = new Attack
-            {
-                AttackPoint = HurtUp()
-            };
-            Attack RightAttack = new Attack
-            {
-                AttackPoint = HurtRight()
-            };
-            Attack LeftAttack = new Attack
-            {
-                AttackPoint = HurtLeft()
-            };
-
-            AttackPositions.Add(LeftAttack);
-            AttackPositions.Add(DownAttack);
-            AttackPositions.Add(UpAttack);
-            AttackPositions.Add(RightAttack);
+            AttackPositions.Add(new Attack(HurtLeft()));
+            AttackPositions.Add(new Attack(HurtDown()));
+            AttackPositions.Add(new Attack(HurtUp()));
+            AttackPositions.Add(new Attack(HurtRight()));
 
             return AttackPositions;
-        }
-        Point HurtUp()
-        {
-            Point AttackPoint = new Point(this.PlayerSkin.Location.X, this.PlayerSkin.Location.Y - 50);
-            return AttackPoint;
-        }
-        Point HurtDown()
-        {
-            Point AttackPoint = new Point(this.PlayerSkin.Location.X, this.PlayerSkin.Location.Y + 50);
-            return AttackPoint;
-        }
-        Point HurtLeft()
-        {
-            Point AttackPoint = new Point(this.PlayerSkin.Location.X - 50, this.PlayerSkin.Location.Y);
-            return AttackPoint;
-        }
-        Point HurtRight()
-        {
-            Point AttackPoint = new Point(this.PlayerSkin.Location.X + 50, PlayerSkin.Location.Y);
-            return AttackPoint;
         }
     }
 }

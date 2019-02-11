@@ -11,5 +11,14 @@ namespace Adventure
     {
         public Point AttackPoint = new Point();
         public int Damage;
+
+        public Attack()
+        {
+        }
+
+        public Attack(Point Attack)
+        {
+            AttackPoint = Attack;
+        }
     }
 }

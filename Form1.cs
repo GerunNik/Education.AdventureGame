@@ -3,8 +3,6 @@ using Adventure.Weapons;
 using Adventure.Potions;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -26,7 +24,7 @@ namespace Adventure
             InitializeComponent();
 
             Player.Health = 15;
-            Player.Avatar = pictureBox3;
+            Player.Skin = pictureBox3;
 
             FillStartInventory();
             DefineAllTurns();
@@ -105,59 +103,37 @@ namespace Adventure
 
         private void WalkUp(object sender, EventArgs e)
         {
-            if (pictureBox3.Top != 44)
-            {
-                pictureBox3.Top += -50;
-            }
-            //Maybe change Image for different direction
+            Player.MoveUp();
 
             CheckGround();
         }
 
         private void WalkDown(object sender, EventArgs e)
         {
-            if (pictureBox3.Top != 194)
-            {
-                pictureBox3.Top += 50;
-            }
-            //Maybe change Image for different direction
+            Player.MoveDown();
 
             CheckGround();
         }
 
         private void WalkLeft(object sender, EventArgs e)
         {
-            if (pictureBox3.Left != 74)
-            {
-                pictureBox3.Left += -50;
-            }
-            //Maybe change Image for different direction
+            Player.MoveLeft();
 
             CheckGround();
         }
 
         private void WalkRight(object sender, EventArgs e)
         {
-            if (pictureBox3.Left != 474)
-            {
-                pictureBox3.Left += 50;
-            }
-            //Maybe change Image for different direction
+            Player.MoveRight();
 
             CheckGround();
         }
         void DrinkAPotion()
         {
-            if (Player.EquippedWeapon is BluePotion)
+            if (Player.EquippedWeapon is Potion)
             {
-                BluePotion bp = Player.EquippedWeapon as BluePotion;
-                bp.Use();
-                EndTurn();
-            }
-            if (Player.EquippedWeapon is RedPotion)
-            {
-                RedPotion rp = Player.EquippedWeapon as RedPotion;
-                rp.Use();
+                Potion Potion = Player.EquippedWeapon as Potion;
+                Potion.Use();
                 EndTurn();
             }
         }
@@ -166,21 +142,7 @@ namespace Adventure
         {
             if (Player.EquippedWeapon != null)
             {
-                if (Player.EquippedWeapon is Mace)
-                {
-                    Mace m = Player.EquippedWeapon as Mace;
-                    AttackPositions(m.AttackUp(), m.Damage);
-                }
-                if (Player.EquippedWeapon is Sword)
-                {
-                    Sword s = Player.EquippedWeapon as Sword;
-                    AttackPositions(s.AttackUp(), s.Damage);
-                }
-                if (Player.EquippedWeapon is Bow)
-                {
-                    Bow b = Player.EquippedWeapon as Bow;
-                    AttackPositions(b.AttackUp(), b.Damage);
-                }
+                AttackPositions(Player.EquippedWeapon.AttackUp(), Player.EquippedWeapon.Damage);
                 DrinkAPotion();
             }
         }
@@ -189,21 +151,7 @@ namespace Adventure
         {
             if (Player.EquippedWeapon != null)
             {
-                if (Player.EquippedWeapon is Mace)
-                {
-                    Mace m = Player.EquippedWeapon as Mace;
-                    AttackPositions(m.AttackDown(), m.Damage);
-                }
-                if (Player.EquippedWeapon is Sword)
-                {
-                    Sword s = Player.EquippedWeapon as Sword;
-                    AttackPositions(s.AttackDown(), s.Damage);
-                }
-                if (Player.EquippedWeapon is Bow)
-                {
-                    Bow b = Player.EquippedWeapon as Bow;
-                    AttackPositions(b.AttackDown(), b.Damage);
-                }
+                AttackPositions(Player.EquippedWeapon.AttackDown(), Player.EquippedWeapon.Damage);
                 DrinkAPotion();
             }
         }
@@ -212,21 +160,7 @@ namespace Adventure
         {
             if (Player.EquippedWeapon != null)
             {
-                if (Player.EquippedWeapon is Mace)
-                {
-                    Mace m = Player.EquippedWeapon as Mace;
-                    AttackPositions(m.AttackLeft(), m.Damage);
-                }
-                if (Player.EquippedWeapon is Sword)
-                {
-                    Sword s = Player.EquippedWeapon as Sword;
-                    AttackPositions(s.AttackLeft(), s.Damage);
-                }
-                if (Player.EquippedWeapon is Bow)
-                {
-                    Bow b = Player.EquippedWeapon as Bow;
-                    AttackPositions(b.AttackLeft(), b.Damage);
-                }
+                AttackPositions(Player.EquippedWeapon.AttackLeft(), Player.EquippedWeapon.Damage);
                 DrinkAPotion();
             }
         }
@@ -235,21 +169,7 @@ namespace Adventure
         {
             if (Player.EquippedWeapon != null)
             {
-                if (Player.EquippedWeapon is Mace)
-                {
-                    Mace m = Player.EquippedWeapon as Mace;
-                    AttackPositions(m.AttackRight(), m.Damage);
-                }
-                if (Player.EquippedWeapon is Sword)
-                {
-                    Sword s = Player.EquippedWeapon as Sword;
-                    AttackPositions(s.AttackRight(), s.Damage);
-                }
-                if (Player.EquippedWeapon is Bow)
-                {
-                    Bow b = Player.EquippedWeapon as Bow;
-                    AttackPositions(b.AttackRight(), b.Damage);
-                }
+                AttackPositions(Player.EquippedWeapon.AttackRight(), Player.EquippedWeapon.Damage);
                 DrinkAPotion();
             }
         }
@@ -266,6 +186,7 @@ namespace Adventure
                     }
                 }
             }
+
             EndTurn();
         }
         void EndTurn()
@@ -282,50 +203,25 @@ namespace Adventure
                 }
                 n++;
             }
+
             foreach (var item in TheEnemies)
             {
-                if (item.Skin.Location.X == Player.Avatar.Location.X + 50 &&
-                    item.Skin.Location.Y == Player.Avatar.Location.Y||
-                    item.Skin.Location.X + 50 == Player.Avatar.Location.X &&
-                    item.Skin.Location.Y == Player.Avatar.Location.Y||
-                    item.Skin.Location.Y + 50 == Player.Avatar.Location.Y &&
-                    item.Skin.Location.X == Player.Avatar.Location.X ||
-                    item.Skin.Location.Y == Player.Avatar.Location.Y + 50 &&
-                    item.Skin.Location.X == Player.Avatar.Location.X)
+                if (IsEnemyNearPlayer(item))
                 {
                     Player.Health -= item.Attack();
                 }
                 else
                 {
-                    if (item is Bat)
-                    {
-                        Bat b = item as Bat;
-                        b.Move(Player.Avatar.Location);
-                    }
-                    else if (item is Ghost)
-                    {
-                        Ghost b = item as Ghost;
-                        b.Move(Player.Avatar.Location);
-                    }
-                    else if (item is Ghoul)
-                    {
-                        Ghoul b = item as Ghoul;
-                        b.Move(Player.Avatar.Location);
-                    }
-                    if (item.Skin.Location.X == Player.Avatar.Location.X + 50 &&
-                        item.Skin.Location.Y == Player.Avatar.Location.Y ||
-                        item.Skin.Location.X + 50 == Player.Avatar.Location.X &&
-                        item.Skin.Location.Y == Player.Avatar.Location.Y ||
-                        item.Skin.Location.Y + 50 == Player.Avatar.Location.Y &&
-                        item.Skin.Location.X == Player.Avatar.Location.X ||
-                        item.Skin.Location.Y == Player.Avatar.Location.Y + 50 &&
-                        item.Skin.Location.X == Player.Avatar.Location.X)
+                    item.Move(Player.Skin.Location);
+                    if (IsEnemyNearPlayer(item))
                     {
                         Player.Health -= item.Attack();
                     }
                 }
             }
+
             ShowHealth();
+
             if (Player.Health < 1)
             {
                 Player.Die();
@@ -334,6 +230,21 @@ namespace Adventure
 
             FillInventoryBox();
             RoundClear();
+        }
+        bool IsEnemyNearPlayer(Enemy item)
+        {
+            if (item.Skin.Location.X == Player.Skin.Location.X + 50 &&
+                        item.Skin.Location.Y == Player.Skin.Location.Y ||
+                        item.Skin.Location.X + 50 == Player.Skin.Location.X &&
+                        item.Skin.Location.Y == Player.Skin.Location.Y ||
+                        item.Skin.Location.Y + 50 == Player.Skin.Location.Y &&
+                        item.Skin.Location.X == Player.Skin.Location.X ||
+                        item.Skin.Location.Y == Player.Skin.Location.Y + 50 &&
+                        item.Skin.Location.X == Player.Skin.Location.X)
+            {
+                return true;
+            }
+            return false;
         }
         void ShowHealth()
         {
@@ -347,17 +258,20 @@ namespace Adventure
         {
             foreach (var item in StuffOnGround)
             {
-                if (Player.Avatar.Location == item.Skin.Location)
+                if (Player.Skin.Location == item.Skin.Location)
                 {
                     Player.Inventory.Add(item);
+
                     if (Player.EquippedWeapon == null)
                     {
                         EquipWeapon(item.Name);
                     }
+
                     Point OutOfPicture = new Point(-100, -100);
                     item.Skin.Location = OutOfPicture;
                 }
             }
+
             EndTurn();
         }
 
@@ -366,29 +280,25 @@ namespace Adventure
             Sword SwordWeapon = new Sword
             {
                 Skin = PictureSword,
-                Name = "Sword",
-                Damage = 3,
-                PlayerSkin = Player.Avatar
+                PlayerSkin = Player.Skin
             };
             Bow BowWeapon = new Bow
             {
                 Skin = PictureBow,
-                Name = "Bow",
-                Damage =  1,
-                PlayerSkin = Player.Avatar
+                PlayerSkin = Player.Skin
             };
             Mace MazeWeapon = new Mace
             {
                 Skin = PictureMace,
-                Name = "Mace",
-                Damage = 5,
-                PlayerSkin = Player.Avatar
+                PlayerSkin = Player.Skin
             };
 
-            BluePotion BluePotion = new BluePotion(Player, pictureBluePotion);
+            Potion BluePotion = new Potion(Player, pictureBluePotion);
             BluePotion.Name = "BluePotion";
-            RedPotion RedPotion = new RedPotion(Player, pictureRedPotion);
+            BluePotion.HealingEffect = 5;
+            Potion RedPotion = new Potion(Player, pictureRedPotion);
             RedPotion.Name = "RedPotion";
+            RedPotion.HealingEffect = 3;
             RedPotion.Skin.Location = new Point(474, 194);
             BluePotion.Skin.Location = new Point(474, 44);
 
@@ -462,6 +372,7 @@ namespace Adventure
             foreach (var item in AllEnemies)
             {
                 bool match = false;
+
                 foreach (var item2 in TheEnemies)
                 {
                     if (item == item2)
@@ -469,6 +380,7 @@ namespace Adventure
                         match = true;
                     }
                 }
+
                 item.Skin.Visible = match;
                 item.Skin.Enabled = match;
             }
@@ -484,7 +396,8 @@ namespace Adventure
                         item.Skin.Location = DefinedTurns[CurrentRound].EnemieSpawnPoints[i];
                         i++;
                     }
-                    Player.Avatar.Location = DefinedTurns[CurrentRound].PlayerStartPoint;
+
+                    Player.Skin.Location = DefinedTurns[CurrentRound].PlayerStartPoint;
                     CurrentRound++;
                 }
                 catch (System.ArgumentOutOfRangeException)

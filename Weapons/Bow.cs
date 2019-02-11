@@ -10,105 +10,64 @@ namespace Adventure.Weapons
 {
     class Bow : Weapon
     {
-        public List<Attack> AttackUp()
+        public Bow()
         {
-            List<Attack> AttackPositions = new List<Attack>();
-
-            foreach (var item in HurtUp())
-            {
-                Attack UpAttack = new Attack
-                {
-                    AttackPoint = item
-                };
-                AttackPositions.Add(UpAttack);
-            }
-
-            return AttackPositions;
+            Damage = 1;
+            Name = "Bat";
         }
-        public List<Attack> AttackDown()
+        public override List<Attack> AttackUp()
         {
-            List<Attack> AttackPositions = new List<Attack>();
+            return PierceThrough("Up");
+        }
+        public override List<Attack> AttackDown()
+        {
+            return PierceThrough("Down");
+        }
+        public override List<Attack> AttackLeft()
+        {
+            return PierceThrough("Left");
+        }
+        public override List<Attack> AttackRight()
+        {
+            return PierceThrough("Right");
+        }
 
-            foreach (var item in HurtDown())
+        List<Attack> PierceThrough(string direction)
+        {
+            List<Attack> FlightRoute = new List<Attack>();
+
+            switch (direction)
             {
-                Attack DownAttack = new Attack
-                {
-                    AttackPoint = item
-                };
-                AttackPositions.Add(DownAttack);
+                case "Up":
+                    for (int i = 0; i < 9; i++)
+                    {
+                        FlightRoute.Add(new Attack(new Point(this.PlayerSkin.Location.X, this.PlayerSkin.Location.Y - (50 * i))));
+                    }
+                    break;
+
+                case "Down":
+                    for (int i = 0; i < 9; i++)
+                    {
+                        FlightRoute.Add(new Attack(new Point(this.PlayerSkin.Location.X, this.PlayerSkin.Location.Y + (50 * i))));
+                    }
+                    break;
+
+                case "Right":
+                    for (int i = 0; i < 9; i++)
+                    {
+                        FlightRoute.Add(new Attack(new Point(this.PlayerSkin.Location.X + (50 * i), this.PlayerSkin.Location.Y)));
+                    }
+                    break;
+
+                case "Left":
+                    for (int i = 0; i < 9; i++)
+                    {
+                        FlightRoute.Add(new Attack(new Point(this.PlayerSkin.Location.X - (50 * i), this.PlayerSkin.Location.Y)));
+                    }
+                    break;
             }
 
-            return AttackPositions;
-        }
-        public List<Attack> AttackLeft()
-        {
-            List<Attack> AttackPositions = new List<Attack>();
-
-            foreach (var item in HurtLeft())
-            {
-                Attack LeftAttack = new Attack
-                {
-                    AttackPoint = item
-                };
-                AttackPositions.Add(LeftAttack);
-            }
-
-            return AttackPositions;
-        }
-        public List<Attack> AttackRight()
-        {
-            List<Attack> AttackPositions = new List<Attack>();
-            
-            foreach (var item in HurtRight())
-            {
-                Attack RightAttack = new Attack
-                {
-                    AttackPoint = item
-                };
-                AttackPositions.Add(RightAttack);
-            }
-
-            return AttackPositions;
-        }
-        List<Point> HurtUp()
-        {
-            List<Point> attackPoints = new List<Point>();
-            for (int i = 0; i < 9; i++)
-            {
-                Point AttackPoint = new Point(this.PlayerSkin.Location.X, this.PlayerSkin.Location.Y - (50 * i));
-                attackPoints.Add(AttackPoint);
-            }
-            return attackPoints;
-        }
-        List<Point> HurtDown()
-        {
-            List<Point> attackPoints = new List<Point>();
-            for (int i = 0; i < 9; i++)
-            {
-                Point AttackPoint = new Point(this.PlayerSkin.Location.X, this.PlayerSkin.Location.Y + (50 * i));
-                attackPoints.Add(AttackPoint);
-            }
-            return attackPoints;
-        }
-        List<Point> HurtLeft()
-        {
-            List<Point> attackPoints = new List<Point>();
-            for (int i = 0; i < 9; i++)
-            {
-                Point AttackPoint = new Point(this.PlayerSkin.Location.X - (50 * i), this.PlayerSkin.Location.Y);
-                attackPoints.Add(AttackPoint);
-            }
-            return attackPoints;
-        }
-        List<Point> HurtRight()
-        {
-            List<Point> attackPoints = new List<Point>();
-            for (int i = 0; i < 9; i++)
-            {
-                Point AttackPoint = new Point(this.PlayerSkin.Location.X + (50 * i), this.PlayerSkin.Location.Y);
-                attackPoints.Add(AttackPoint);
-            }
-            return attackPoints;
+            return FlightRoute;
         }
     }
 }

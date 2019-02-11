@@ -7,12 +7,11 @@ using System.Windows.Forms;
 
 namespace Adventure
 {
-    class Enemy
+    class Enemy : Mover
     {
         public int Health;
         public int HealthMax;
         public int Damage;
-        public PictureBox Skin;
         
         public int Attack()
         {

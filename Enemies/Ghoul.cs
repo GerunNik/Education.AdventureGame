@@ -9,7 +9,7 @@ namespace Adventure.Enemies
 {
     class Ghoul : Enemy
     {
-        public void Move(Point PlayerPosition)
+        public override void Move(Point PlayerPosition)
         {
             Random r = new Random();
             int moveOrNot = r.Next(1, 4);
@@ -17,82 +17,45 @@ namespace Adventure.Enemies
 
             if (moveOrNot < 3)
             {
-                if (PlayerPosition.X < this.Skin.Location.X)
+                if (directionNumber == 1)
                 {
-                    if (directionNumber == 1)
+                    if (PlayerPosition.X < this.Skin.Location.X)
                     {
-                        if (PlayerPosition.X < this.Skin.Location.X)
-                        {
-                            this.Skin.Left += -50;
-                        }
-                        else if (PlayerPosition.X > this.Skin.Location.X)
-                        {
-                            this.Skin.Left += 50;
-                        }
-                        else
-                        {
-                            if (PlayerPosition.Y < this.Skin.Location.Y)
-                            {
-                                this.Skin.Top += -50;
-                            }
-                            else if (PlayerPosition.Y > this.Skin.Location.Y)
-                            {
-                                this.Skin.Top += 50;
-                            }
-                        }
+                        MoveLeft();
                     }
-                    else if (directionNumber == 2)
+                    else if (PlayerPosition.X > this.Skin.Location.X)
                     {
-                        if (PlayerPosition.Y < this.Skin.Location.Y)
-                        {
-                            this.Skin.Top += -50;
-                        }
-                        else if (PlayerPosition.Y > this.Skin.Location.Y)
-                        {
-                            this.Skin.Top += 50;
-                        }
-                        else
-                        {
-                            if (PlayerPosition.X < this.Skin.Location.X)
-                            {
-                                this.Skin.Left += -50;
-                            }
-                            else if (PlayerPosition.X > this.Skin.Location.X)
-                            {
-                                this.Skin.Left += 50;
-                            }
-                        }
+                        MoveRight();
+                    }
+                    else if(PlayerPosition.Y < this.Skin.Location.Y)
+                    {
+                        MoveUp();
+                    }
+                    else if (PlayerPosition.Y > this.Skin.Location.Y)
+                    {
+                        MoveDown();
                     }
                 }
-                else if (PlayerPosition.X > this.Skin.Location.X)
+                else if (directionNumber == 2)
                 {
-                    //Go Right
-                    if (directionNumber == 1)
+                    if (PlayerPosition.Y < this.Skin.Location.Y)
                     {
-                        this.Skin.Top += 50;
+                        MoveUp();
                     }
-                    else if (directionNumber == 2)
+                    else if (PlayerPosition.Y > this.Skin.Location.Y)
                     {
-                        this.Skin.Top += -50;
+                        MoveDown();
                     }
-                    else if (directionNumber == 3)
+                    else if (PlayerPosition.X < this.Skin.Location.X)
                     {
-                        this.Skin.Left += 50;
+                        MoveLeft();
                     }
-                }
-                else
-                {
-                    if (PlayerPosition.Y > this.Skin.Location.Y)
+                    else if (PlayerPosition.X > this.Skin.Location.X)
                     {
-                        this.Skin.Top += 50;
-                    }
-                    else
-                    {
-                        this.Skin.Top += -50;
+                        MoveRight();
                     }
                 }
             }
-
         }
     }
 }
